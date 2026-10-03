@@ -1,0 +1,115 @@
+{
+  "name": "Campus-Assistant-AI-Chatbot",
+  "nodes": [
+    {
+      "parameters": {
+        "public": true,
+        "initialMessages": "Halo! Saya Campus Assistant. Ada yang bisa saya bantu terkait informasi perkuliahan dan akademik?   ",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.5,
+      "position": [
+        0,
+        0
+      ],
+      "id": "eeeeb314-d259-44fb-8276-4173874632e0",
+      "name": "When chat message received",
+      "webhookId": "cd3e2888-5d4c-4fc9-9412-1a13a7cd014e"
+    },
+    {
+      "parameters": {
+        "options": {
+          "systemMessage": "\nKamu adalah \"Campus Assistant\", seorang asisten AI perkuliahan dan akademik yang ramah, sopan, dan profesional.\n\n\nTugas utamamu adalah membantu mahasiswa dan calon mahasiswa dengan memberikan jawaban yang tepat seputar informasi perkuliahan, jadwal akademik, panduan pembelajaran, serta layanan kampus.\n\n1. Gunakan Bahasa Indonesia yang baik, santai, dan ramah.\n2. Jawab pertanyaan secara ringkas, padat, dan jelas (maksimal 150 kata).\n3. Jika pertanyaan pengguna tidak berhubungan dengan topik akademik atau perkuliahan, ingatkan secara halus bahwa kamu berfokus sebagai Asisten Kampus.\n4. Jangan mengarang informasi jika kamu tidak tahu jawabannya; berikan jawaban yang jujur dan sarankan untuk menghubungi bagian administrasi kampus."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        208,
+        -64
+      ],
+      "id": "888f672f-9f40-4981-afa3-36d1a872bc34",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.4,
+      "position": [
+        336,
+        144
+      ],
+      "id": "8c5f71a5-6dfd-4f43-8f7b-be2aa9fd3c40",
+      "name": "Simple Memory"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1.1,
+      "position": [
+        192,
+        144
+      ],
+      "id": "55a5afab-4cef-4c4c-a723-e3572ec3c56b",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "O7wAZn1sCGOlUHgJ",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "9df7382c-a23c-433a-aab3-fb53b84cadda",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "dc96f10ae7dc95d3c138575ba243a0a167923dbcb524841d451aadf9135d5fb3"
+  },
+  "nodeGroups": [],
+  "id": "hHKY4IiPpgGxXxbX",
+  "tags": []
+}
