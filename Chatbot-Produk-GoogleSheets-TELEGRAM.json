@@ -1,0 +1,322 @@
+{
+  "name": "Chatbot-Produk-GoogleSheets-TELEGRAM",
+  "nodes": [
+    {
+      "parameters": {
+        "updates": [
+          "message"
+        ],
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegramTrigger",
+      "typeVersion": 1.5,
+      "position": [
+        -48,
+        320
+      ],
+      "id": "45413641-61f7-4d9b-9131-d2b12b5a1338",
+      "name": "Telegram Trigger",
+      "webhookId": "6b4335b3-48e3-4961-9dbc-e9f0c16a6ffb",
+      "credentials": {
+        "telegramApi": {
+          "id": "gaYUf0cOnT1BeWBx",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "9d7fdbe5-944c-4c2a-9ef4-716ee1637b5f",
+              "name": "message.text",
+              "value": "={{ $json.message.text }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        160,
+        320
+      ],
+      "id": "ee9623c6-9ccc-4384-9952-bc4d3efbf35c",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "a3eefb67-b20c-442c-b613-6e97ae987307",
+              "leftValue": "={{ $('Telegram Trigger').item.json.message.text }}",
+              "rightValue": "SEO",
+              "operator": {
+                "type": "string",
+                "operation": "contains"
+              }
+            },
+            {
+              "id": "44443849-6387-4f51-8b59-8bfe5e7636bd",
+              "leftValue": "={{ $('Telegram Trigger').item.json.message.text }}",
+              "rightValue": "Email Marketing",
+              "operator": {
+                "type": "string",
+                "operation": "contains"
+              }
+            },
+            {
+              "id": "9be7f2ce-8546-4ca4-af3e-7f7e9c6828bf",
+              "leftValue": "={{ $('Telegram Trigger').item.json.message.text }}",
+              "rightValue": "CLV",
+              "operator": {
+                "type": "string",
+                "operation": "contains"
+              }
+            },
+            {
+              "id": "a455f360-87b2-405b-889d-c328a07561a6",
+              "leftValue": "={{ $('Telegram Trigger').item.json.message.text }}",
+              "rightValue": "Marketing Funnel",
+              "operator": {
+                "type": "string",
+                "operation": "contains"
+              }
+            },
+            {
+              "id": "2da24810-a2e5-44bf-a9bb-7a8c39f35ee3",
+              "leftValue": "={{ $('Telegram Trigger').item.json.message.text }}",
+              "rightValue": "B2B Marketing",
+              "operator": {
+                "type": "string",
+                "operation": "contains"
+              }
+            }
+          ],
+          "combinator": "or"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        384,
+        320
+      ],
+      "id": "dce2bf61-7765-4b18-9814-9dd3dd008d0f",
+      "name": "Validasi Input"
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('Telegram Trigger').item.json.message.chat.id }}",
+        "text": "=Harap bertanya menggunakan salah satu contoh:\n1. Apa perbedaan SEO dan SEM?\n2. Cara mengukur Email Marketing?\n3. Apa itu CLV?\n4. Strategi Awareness Funnel?\n5. Peran Webinar B2B?",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        544,
+        496
+      ],
+      "id": "8d6b74d9-dc4a-4290-a037-f8298a9c7944",
+      "name": "Output False",
+      "webhookId": "b51e2838-b970-47d5-b530-1f0d0a056ffc",
+      "credentials": {
+        "telegramApi": {
+          "id": "gaYUf0cOnT1BeWBx",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $('Telegram Trigger').item.json.message.text }}",
+        "options": {
+          "systemMessage": "Anda adalah asisten FAQ spesialis pemasaran. Jawab hanya berdasarkan Google Sheets. Jika tidak ada data, sarankan hubungi tim support"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        576,
+        112
+      ],
+      "id": "3df9de74-f01b-43ab-bdbc-0f0f712fbff5",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1.1,
+      "position": [
+        608,
+        320
+      ],
+      "id": "68bfff40-c188-4562-b6fa-e3c0f17f5dd2",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "O7wAZn1sCGOlUHgJ",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1aJ2HlnUKJdV8l2wu9XQZlQ5wXg5kNGXJl8zKHiqItIo",
+          "mode": "list",
+          "cachedResultName": "04-06 Pertanyaan untuk studi kasus chatbot",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1aJ2HlnUKJdV8l2wu9XQZlQ5wXg5kNGXJl8zKHiqItIo/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1aJ2HlnUKJdV8l2wu9XQZlQ5wXg5kNGXJl8zKHiqItIo/edit#gid=0"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTool",
+      "typeVersion": 4.7,
+      "position": [
+        800,
+        320
+      ],
+      "id": "91e97d60-2443-4e5a-b66b-f5fb4fabae4f",
+      "name": "Get row(s) in sheet in Google Sheets",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "3xu25aZN4ySmgP9a",
+          "name": "Google Sheets account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('Telegram Trigger').item.json.message.chat.id }}",
+        "text": "={{ $json.output }}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        944,
+        128
+      ],
+      "id": "a9907278-86a9-4745-be21-16954609cc55",
+      "name": "Send a text message",
+      "webhookId": "b7c6f679-3c2b-45c7-81d6-bb90bc48de22",
+      "credentials": {
+        "telegramApi": {
+          "id": "gaYUf0cOnT1BeWBx",
+          "name": "Telegram account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Telegram Trigger": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Validasi Input",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Validasi Input": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Output False",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get row(s) in sheet in Google Sheets": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Send a text message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "c032e619-760d-492d-94e9-e420a39c041e",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "dc96f10ae7dc95d3c138575ba243a0a167923dbcb524841d451aadf9135d5fb3"
+  },
+  "nodeGroups": [],
+  "id": "QAirDjdpGizFh8EF",
+  "tags": []
+}
