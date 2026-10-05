@@ -1,0 +1,164 @@
+{
+  "name": "Tugas-3 PAI",
+  "nodes": [
+    {
+      "parameters": {
+        "options": {
+          "systemMessage": "Anda seorang spesialis pemasaran produk dari perusahaan NF Academy. Tugas Anda membantu menjawab pertanyaan yang berkaitan dengan NF Academy sesuai dengan Dasar Pengetahuan Produk di bawah ini:\n"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        176,
+        0
+      ],
+      "id": "6841d510-d23d-4bd6-8b02-6cd14bdf55c0",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1.1,
+      "position": [
+        96,
+        192
+      ],
+      "id": "10a6a600-5eb1-473c-bf1a-b8fcf540ff26",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "hxLzCgDdacxY3zPl",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.4,
+      "position": [
+        272,
+        176
+      ],
+      "id": "a4f4fcb5-98be-48b4-8d8e-757433b13865",
+      "name": "Simple Memory"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1rlmvZOI5BzTSL0EdKy57dY1dM_5iqtygi96We2RUkus",
+          "mode": "list",
+          "cachedResultName": "n8n 1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1rlmvZOI5BzTSL0EdKy57dY1dM_5iqtygi96We2RUkus/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "DataTable",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1rlmvZOI5BzTSL0EdKy57dY1dM_5iqtygi96We2RUkus/edit#gid=0"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTool",
+      "typeVersion": 4.7,
+      "position": [
+        416,
+        176
+      ],
+      "id": "9f1a3ec7-060d-4d1f-aa44-966c86e49988",
+      "name": "Get row(s) in sheet in Google Sheets",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "3xu25aZN4ySmgP9a",
+          "name": "Google Sheets account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "public": true,
+        "initialMessages": "Assalamu'alaikum ! 👋\nNama Saya Taufiq. Ada yang bisa saya bantu?",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.5,
+      "position": [
+        0,
+        0
+      ],
+      "id": "69fc6370-8fd2-4c8d-8521-6a62c84e7d86",
+      "name": "When chat message received",
+      "webhookId": "ce374eac-7b5b-4b0d-9f31-7d23dbce08c5"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get row(s) in sheet in Google Sheets": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        []
+      ]
+    },
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "3dda2815-4713-4e46-a7b1-929b38fec1ce",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "dc96f10ae7dc95d3c138575ba243a0a167923dbcb524841d451aadf9135d5fb3"
+  },
+  "nodeGroups": [],
+  "id": "xwBGKdEAi6vFisBM",
+  "tags": []
+}
